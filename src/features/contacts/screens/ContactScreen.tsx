@@ -58,12 +58,14 @@ const ContactScreen = () => {
 
     const fetchContacts = () => {
         try {
+            console.log('here')
             reactNativeContacts.getAll()
                 .then((contacts) => {
+                    console.log('contacts',contacts)
                     setContacts(contacts);
                 })
         } catch (error) {
-            console.log("Error fetching contacts");
+            console.log("Error fetching contacts",error);
         } finally {
             setLoading(false);
         }
