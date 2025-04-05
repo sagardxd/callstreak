@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "273704106291",
+    "project_id": "callstreak-588be",
+    "storage_bucket": "callstreak-588be.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273704106291:android:1fb59788a70f0a4e40a646",
+        "android_client_info": {
+          "package_name": "com.callstreak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273704106291-4ef8j22f4t6v90m2at448m43pmgc3g7l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.callstreak",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "273704106291-emik2jk8kaavk8k18q4quoguokp6br9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcpGlLaOVSPQ-P7EGLrrDRTTo9e3c3Wyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273704106291-emik2jk8kaavk8k18q4quoguokp6br9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
