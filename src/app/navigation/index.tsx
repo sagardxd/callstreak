@@ -1,15 +1,15 @@
-import { NavigationContainer } from "@react-navigation/native"
 import MainStack from "./MainStack"
 import AuthStack from "./AuthStack"
+import { useAuth } from "../context/AuthContext";
 
-const user = false;
 
 const AppNavigator = () => {
-  return (
-    <NavigationContainer>
-      {user ? <MainStack/> : <AuthStack/>}
-    </NavigationContainer>
-  )
+    const {user, loading} = useAuth();
+
+    if (loading) return null;
+
+  return user ? <MainStack/> : <AuthStack/>;
+  
 }
 
 export default AppNavigator
