@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Home from '../../features/home/screens/Home';
 
-export class MainStack extends Component {
-  render() {
-    return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
-    )
-  }
+const Stack = createNativeStackNavigator();
+const MainStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='home' component={Home} />
+    </Stack.Navigator>
+  )
 }
 
 export default MainStack

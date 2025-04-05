@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { NavigationContainer } from "@react-navigation/native"
+import MainStack from "./MainStack"
+import AuthStack from "./AuthStack"
 
-export class index extends Component {
-  render() {
-    return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
-    )
-  }
+const user = false;
+
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      {user ? <MainStack/> : <AuthStack/>}
+    </NavigationContainer>
+  )
 }
 
-export default index
+export default AppNavigator
