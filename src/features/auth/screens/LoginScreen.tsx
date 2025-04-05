@@ -1,12 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import GoogleLogin from '../components/googleLogin'
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import PhoneSignIn from '../components/phoneLogin';
+
 
 const LoginScreen = () => {
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login to Callstreak</Text>
-      <GoogleLogin />
+      {/* <GoogleLogin /> */}
+      <PhoneSignIn />
     </View>
   )
 }

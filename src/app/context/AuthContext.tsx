@@ -14,8 +14,8 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  loginWithGoogle: async () => {},
-  logout: async () => {},
+  loginWithGoogle: async () => { },
+  logout: async () => { },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      
+
       // Add check for sign in status
       const isSignedIn = GoogleSignin.hasPreviousSignIn();
       if (isSignedIn) {
@@ -64,8 +64,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
+      if (user?.providerData[0].providerId === 'google.com') {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
       await auth().signOut();
     } catch (error: any) {
       Alert.alert("Error signing out", error.message);

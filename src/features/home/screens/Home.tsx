@@ -7,7 +7,7 @@ const HomeScreen = () => {
   const {user, logout} = useAuth();
   return (
     <View>
-      <Text>Hello {user?.displayName}</Text>
+      <Text>Hello {user?.displayName ? user.displayName : user?.phoneNumber}</Text>
       <TouchableOpacity onPress={logout}>
         <Text>Logout</Text>
       </TouchableOpacity>
