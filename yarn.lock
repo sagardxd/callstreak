@@ -6248,6 +6248,11 @@ react-native-contacts@^8.0.4:
   resolved "https://registry.npmjs.org/react-native-contacts/-/react-native-contacts-8.0.4.tgz"
   integrity sha512-uBwYlavWS1KjULKk7xLCZcLr6vQcmqLIeHzWY+MEKGtT28YjAlWG87N0bCaRKZSXvz/o/09tVqzU0ZOpkkJC1w==
 
+react-native-loading-spinner-overlay@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz"
+  integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
+
 react-native-mmkv@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/react-native-mmkv/-/react-native-mmkv-3.2.0.tgz"

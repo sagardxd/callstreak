@@ -2,9 +2,10 @@ import { View, Text, Platform, PermissionsAndroid, Alert, Linking, FlatList } fr
 import React, { useEffect, useState } from 'react'
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import reactNativeContacts from 'react-native-contacts';
-import { contactSync } from '../services/contactSyncService';
+import { contactSync } from '../services/contactSync.service';
 import { getContactSyncStatus, getUsersInApp } from '../services/contacts.storage';
 import uuid from 'react-native-uuid';
+import ContactCard from '../components/ContactCard';
 
 
 export type MyContact = {
@@ -13,7 +14,7 @@ export type MyContact = {
     phoneNumber: string
 }
 
-const ContactScreen = () => {
+const CallLogScreen = () => {
     const [contacts, setContacts] = useState<MyContact[] | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -103,18 +104,12 @@ const ContactScreen = () => {
 
     return (
         <View>
-            <Text>ContactScreen</Text>
             {loading ?
                 <Text>Loading</Text>
                 :
                 <FlatList
                     data={contacts}
-                    renderItem={({ item }) => (
-                        <View style={{ flexDirection: 'row', gap: 5 }}>
-                            <Text>{item.name}</Text>
-                            <Text>{item.phoneNumber}</Text>
-                        </View>
-                    )}
+                    renderItem={({ item }) => <ContactCard item={item}/>}
                     keyExtractor={(item) => item.id}
                 />
             }
@@ -122,4 +117,4 @@ const ContactScreen = () => {
     )
 }
 
-export default ContactScreen
+export default CallLogScreen

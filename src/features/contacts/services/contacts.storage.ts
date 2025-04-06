@@ -1,5 +1,5 @@
 import { storage } from "../../../storage/mmkv";
-import { MyContact } from "../screens/ContactScreen";
+import { MyContact } from "../screens/CallLogScreen";
 
 type ContactGroups = {
   userInApp: MyContact[];

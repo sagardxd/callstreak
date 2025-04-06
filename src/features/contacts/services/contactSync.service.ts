@@ -1,7 +1,7 @@
 
 import { collection, getDocs, query, where } from "@react-native-firebase/firestore";
 import { Store } from "../../../firestore/firestore";
-import { MyContact } from "../screens/ContactScreen";
+import { MyContact } from "../screens/CallLogScreen";
 import { firebase } from "@react-native-firebase/auth";
 import { setContactsInLocalStorage } from "./contacts.storage";
 
@@ -12,8 +12,8 @@ export const contactSync = async (contacts: MyContact[]) => {
     const userNotInApp: any[] = [];
     const batchSize = 10;
 
-    for (let i = 0; i < 10; i += batchSize) {
-        const currContactList = contacts.slice(i, i + batchSize).map(contact => contact.phoneNumber);
+    for (let i = 0; i < contacts.length; i += batchSize) {
+        const currContactList = contacts.slice(i, i + batchSize).map(contact => contact.phoneNumber).filter(Boolean);
 
         try {
             const snapshot = await getDocs(
@@ -22,8 +22,6 @@ export const contactSync = async (contacts: MyContact[]) => {
                     where(firebase.firestore.FieldPath.documentId(), 'in', currContactList)
                 )
             );
-
-            console.log('snapshot', snapshot)
 
             contacts.slice(i, i + batchSize).forEach(contact => {
                 // Use find instead of some
