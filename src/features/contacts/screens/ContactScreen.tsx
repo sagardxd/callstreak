@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import reactNativeContacts from 'react-native-contacts';
 import { contactSync } from '../services/contactSyncService';
-import { getUsersInApp } from '../services/contacts.storage';
+import { getContactSyncStatus, getUsersInApp } from '../services/contacts.storage';
 import uuid from 'react-native-uuid';
 
 
@@ -66,23 +66,34 @@ const ContactScreen = () => {
     }
 
     const fetchContacts = async () => {
-        console.log('here')
         try {
-            reactNativeContacts.getAll()
-                .then(async (fetchedContacts) => {
-                    console.log("fetch", fetchedContacts)
-                    try {
-                        const arr = fetchedContacts.map(contact => ({
-                            id: uuid.v4(),
-                            name: contact.displayName ?? '',
-                            phoneNumber: contact.phoneNumbers?.[0]?.number.replace(/\s+/g, '') ?? ''
-                        }));
-                        await contactSync(arr);
-                        setContacts(getUsersInApp());
-                    } catch (err) {
-                        console.error("Contact Syncing error", err);
-                    }
-                })
+            const contactSynced = getContactSyncStatus();
+
+            // if contact are not synced get then from Contact List sync them
+            if (!contactSynced) {
+                console.log('nhi h contact sync')
+                reactNativeContacts.getAll()
+                    .then(async (fetchedContacts) => {
+                        console.log("fetch", fetchedContacts)
+                        try {
+                            const arr = fetchedContacts.map(contact => ({
+                                id: uuid.v4(),
+                                name: contact.displayName ?? '',
+                                phoneNumber: contact.phoneNumbers?.[0]?.number.replace(/\s+/g, '') ?? ''
+                            }));
+                            // sync contacts
+                            await contactSync(arr);
+
+                        } catch (err) {
+                            console.error("Contact Syncing error", err);
+                        }
+                    })
+            }else {
+                console.log('contact sync fetching from local storage! Lets goo')
+            }
+
+            // after syncing/already synced get the users in the app                 
+            setContacts(getUsersInApp());
         } catch (error) {
             console.log("Error fetching contacts", error);
         } finally {
@@ -99,10 +110,10 @@ const ContactScreen = () => {
                 <FlatList
                     data={contacts}
                     renderItem={({ item }) => (
-                    <View style={{flexDirection: 'row', gap: 5}}>
-                        <Text>{item.name}</Text>
-                        <Text>{item.phoneNumber}</Text>
-                    </View>
+                        <View style={{ flexDirection: 'row', gap: 5 }}>
+                            <Text>{item.name}</Text>
+                            <Text>{item.phoneNumber}</Text>
+                        </View>
                     )}
                     keyExtractor={(item) => item.id}
                 />
