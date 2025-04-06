@@ -1,11 +1,20 @@
 import { View, Text, Platform, PermissionsAndroid, Alert, Linking, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-import { Contact } from 'react-native-contacts/type';
 import reactNativeContacts from 'react-native-contacts';
+import { contactSync } from '../services/contactSyncService';
+import { getUsersInApp } from '../services/contacts.storage';
+import uuid from 'react-native-uuid';
+
+
+export type MyContact = {
+    id: string
+    name: string
+    phoneNumber: string
+}
 
 const ContactScreen = () => {
-    const [contacts, setContacts] = useState<Contact[] | null>(null);
+    const [contacts, setContacts] = useState<MyContact[] | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -56,16 +65,26 @@ const ContactScreen = () => {
         })
     }
 
-    const fetchContacts = () => {
+    const fetchContacts = async () => {
+        console.log('here')
         try {
-            console.log('here')
             reactNativeContacts.getAll()
-                .then((contacts) => {
-                    console.log('contacts',contacts)
-                    setContacts(contacts);
+                .then(async (fetchedContacts) => {
+                    console.log("fetch", fetchedContacts)
+                    try {
+                        const arr = fetchedContacts.map(contact => ({
+                            id: uuid.v4(),
+                            name: contact.displayName ?? '',
+                            phoneNumber: contact.phoneNumbers?.[0]?.number.replace(/\s+/g, '') ?? ''
+                        }));
+                        await contactSync(arr);
+                        setContacts(getUsersInApp());
+                    } catch (err) {
+                        console.error("Contact Syncing error", err);
+                    }
                 })
         } catch (error) {
-            console.log("Error fetching contacts",error);
+            console.log("Error fetching contacts", error);
         } finally {
             setLoading(false);
         }
@@ -76,11 +95,16 @@ const ContactScreen = () => {
             <Text>ContactScreen</Text>
             {loading ?
                 <Text>Loading</Text>
-                 :
+                :
                 <FlatList
                     data={contacts}
-                    renderItem={({ item }) => <Text>{item.displayName}</Text>}
-                    keyExtractor={(item) => item.recordID}
+                    renderItem={({ item }) => (
+                    <View style={{flexDirection: 'row', gap: 5}}>
+                        <Text>{item.name}</Text>
+                        <Text>{item.phoneNumber}</Text>
+                    </View>
+                    )}
+                    keyExtractor={(item) => item.id}
                 />
             }
         </View>

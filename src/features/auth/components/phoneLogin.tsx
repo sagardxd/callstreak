@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { TextInput, View, StyleSheet, Text, Keyboard, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {  StyleSheet, Keyboard } from 'react-native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { addUser } from '../services/userService';
 import PhoneNumberInputForm from './ui/PhoneNumberInputForm';
@@ -9,7 +9,6 @@ const PhoneSignIn: React.FC = () => {
   const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
   const [code, setCode] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const inputRef = useRef<TextInput>(null);
 
   // Send verification code to phone number
   const signInWithPhoneNumber = async (phoneNumber: string) => {
@@ -34,11 +33,10 @@ const PhoneSignIn: React.FC = () => {
   };
 
   const handleInput = (text: string) => {
-    const cleaned = text.replace(/[^0-9]/g, '').slice(0, 10);
-    setPhoneNumber(cleaned);
+    setPhoneNumber(text);
 
-    if (cleaned.length === 10) {
-      Keyboard.dismiss(); // Hide keyboard
+    if (text.length === 10) {
+      Keyboard.dismiss(); 
     }
   };
 
@@ -47,7 +45,6 @@ const PhoneSignIn: React.FC = () => {
     <OtpInputForm code={code} setCode={setCode} confirmCode={confirmCode}/>
     :
     <PhoneNumberInputForm
-      inputRef={inputRef}
       phoneNumber={phoneNumber}
       handleInput={handleInput}
       signInWithPhoneNumber={signInWithPhoneNumber} />

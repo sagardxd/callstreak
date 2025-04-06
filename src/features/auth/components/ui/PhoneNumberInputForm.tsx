@@ -1,21 +1,19 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import React, {RefObject} from 'react'
+import React from 'react'
 
 type PhoneNumberInputFormProps = {
-  inputRef : RefObject<TextInput | null>
   phoneNumber: string
   handleInput: (text: string) => void
   signInWithPhoneNumber:  (text: string) => void
   
 }
 
-const PhoneNumberInputForm: React.FC<PhoneNumberInputFormProps>= ({inputRef, phoneNumber, handleInput, signInWithPhoneNumber}) => {
+const PhoneNumberInputForm: React.FC<PhoneNumberInputFormProps>= ({ phoneNumber, handleInput, signInWithPhoneNumber}) => {
   return (
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
               <Text style={styles.prefix}>+91</Text>
               <TextInput
-                ref={inputRef}
                 style={styles.input}
                 value={phoneNumber}
                 onChangeText={handleInput}

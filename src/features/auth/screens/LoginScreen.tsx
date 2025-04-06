@@ -1,7 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
-import GoogleLogin from '../components/googleLogin'
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import React from 'react'
 import PhoneSignIn from '../components/phoneLogin';
 
 
