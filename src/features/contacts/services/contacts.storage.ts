@@ -1,9 +1,9 @@
+import { Contact } from "react-native-contacts/type";
 import { storage } from "../../../storage/mmkv";
-import { MyContact } from "../screens/CallLogScreen";
 
 type ContactGroups = {
-  userInApp: MyContact[];
-  userNotInApp: MyContact[];
+  userInApp: Contact[];
+  userNotInApp: Contact[];
 };
 
 export const setContactsInLocalStorage = ({ userInApp, userNotInApp }: ContactGroups) => {
@@ -16,7 +16,7 @@ export const setContactsInLocalStorage = ({ userInApp, userNotInApp }: ContactGr
   }
 };
 
-const setUsersInApp = (userInApp: MyContact[]) => {
+const setUsersInApp = (userInApp: Contact[]) => {
   try {
     storage.set("userInApp", JSON.stringify(userInApp));
   } catch (error) {
@@ -24,7 +24,7 @@ const setUsersInApp = (userInApp: MyContact[]) => {
   }
 };
 
-const setUsersNotInApp = (userNotInApp: MyContact[]) => {
+const setUsersNotInApp = (userNotInApp: Contact[]) => {
   try {
     storage.set("userNotInApp", JSON.stringify(userNotInApp));
   } catch (error) {
@@ -40,7 +40,7 @@ const setContactSyncStatus = (status: boolean) => {
   }
 };
 
-export const getUsersInApp = (): MyContact[] => {
+export const getUsersInApp = (): Contact[] => {
   try {
     const stored = storage.getString("userInApp");
     return stored ? JSON.parse(stored) : [];
@@ -50,7 +50,7 @@ export const getUsersInApp = (): MyContact[] => {
   }
 };
 
-export const getUsersNotInApp = (): MyContact[] => {
+export const getUsersNotInApp = (): Contact[] => {
   try {
     const stored = storage.getString("userNotInApp");
     return stored ? JSON.parse(stored) : [];

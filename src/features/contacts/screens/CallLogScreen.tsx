@@ -4,18 +4,11 @@ import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import reactNativeContacts from 'react-native-contacts';
 import { contactSync } from '../services/contactSync.service';
 import { getContactSyncStatus, getUsersInApp } from '../services/contacts.storage';
-import uuid from 'react-native-uuid';
 import ContactCard from '../components/ContactCard';
-
-
-export type MyContact = {
-    id: string
-    name: string
-    phoneNumber: string
-}
+import { Contact } from 'react-native-contacts/type';
 
 const CallLogScreen = () => {
-    const [contacts, setContacts] = useState<MyContact[] | null>(null);
+    const [contacts, setContacts] = useState<Contact[] | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -75,15 +68,10 @@ const CallLogScreen = () => {
                 console.log('nhi h contact sync')
                 reactNativeContacts.getAll()
                     .then(async (fetchedContacts) => {
-                        console.log("fetch", fetchedContacts)
                         try {
-                            const arr = fetchedContacts.map(contact => ({
-                                id: uuid.v4(),
-                                name: contact.displayName ?? '',
-                                phoneNumber: contact.phoneNumbers?.[0]?.number.replace(/\s+/g, '') ?? ''
-                            }));
                             // sync contacts
-                            await contactSync(arr);
+                            const result = await contactSync(fetchedContacts);
+                            setContacts(result.userInApp);
 
                         } catch (err) {
                             console.error("Contact Syncing error", err);
@@ -94,7 +82,7 @@ const CallLogScreen = () => {
             // }
 
             // after syncing/already synced get the users in the app                 
-            setContacts(getUsersInApp());
+            // setContacts(getUsersInApp());
         } catch (error) {
             console.log("Error fetching contacts", error);
         } finally {
@@ -110,7 +98,7 @@ const CallLogScreen = () => {
                 <FlatList
                     data={contacts}
                     renderItem={({ item }) => <ContactCard item={item}/>}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.recordID}
                 />
             }
         </View>

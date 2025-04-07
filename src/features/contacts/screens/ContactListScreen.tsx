@@ -1,13 +1,13 @@
 import { View, Text, FlatList, StyleSheet, ScrollView, SectionList } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { MyContact } from './CallLogScreen';
 import { getUsersInApp, getUsersNotInApp } from '../services/contacts.storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ContactCard from '../components/ContactCard';
+import { Contact } from 'react-native-contacts/type';
 
 const ContactListScreen = () => {
-  const [usersInApp, setUsersInApp] = useState<MyContact[] | null>(null);
-  const [usersNotInApp, setUsersNotInApp] = useState<MyContact[] | null>(null);
+  const [usersInApp, setUsersInApp] = useState<Contact[] | null>(null);
+  const [usersNotInApp, setUsersNotInApp] = useState<Contact[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const ContactListScreen = () => {
   return (
     <SectionList
       sections={sections}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.recordID}
       renderItem={({ item }) => <ContactCard item={item} />}
       renderSectionHeader={({ section }) => (
         <Text style={styles.sectionTitle}>{section.title}</Text>

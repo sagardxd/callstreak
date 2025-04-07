@@ -1,11 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '../../../app/context/AuthContext'
 import CallLogScreen from '../../contacts/screens/CallLogScreen'
+import ContactFormModal from '../../contacts/components/ContactFormModal'
 
 const HomeScreen = ({ navigation }: any) => {
   const { user, logout } = useAuth()
-
+  const [showModal, setShowModal] = useState(false)
+    ;
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -19,7 +21,12 @@ const HomeScreen = ({ navigation }: any) => {
       </View>
 
       {/* Call Logs Section */}
-      <Text style={styles.sectionTitle}>Recent Call Logs</Text>
+      <View style={styles.header}>
+        <Text style={styles.sectionTitle}>Recent Call Logs</Text>
+        < TouchableOpacity onPress={() => setShowModal(true)} >
+          <Text style={{ color: 'blue' }}>Contact +</Text>
+        </TouchableOpacity>
+      </View>
       <CallLogScreen />
 
       {/* Floating + Button */}
@@ -31,6 +38,9 @@ const HomeScreen = ({ navigation }: any) => {
       >
         <Text style={styles.floatingButtonText}>+</Text>
       </TouchableOpacity>
+
+      <ContactFormModal visible={showModal} onClose={() => setShowModal(false)} task='add' />
+
     </View>
   )
 }
@@ -95,5 +105,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 2,
   },
-  
+
 })
