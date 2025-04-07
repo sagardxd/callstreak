@@ -8,7 +8,7 @@ const AppNavigator = () => {
 
     if (loading) return null;
 
-  return true ? <MainStack/> : <AuthStack/>;
+  return user ? <MainStack/> : <AuthStack/>;
   
 }
 

@@ -13,7 +13,10 @@ export const contactSync = async (contacts: MyContact[]) => {
     const batchSize = 10;
 
     for (let i = 0; i < contacts.length; i += batchSize) {
-        const currContactList = contacts.slice(i, i + batchSize).map(contact => contact.phoneNumber).filter(Boolean);
+        const currContactList = contacts.slice(i, i + batchSize).map(contact => {
+            const num = contact.phoneNumber?.replace(/\D/g, ''); // remove non-digits
+            return num?.slice(-10); // get last 10 digits
+        }).filter(Boolean);
 
         try {
             const snapshot = await getDocs(
@@ -23,9 +26,12 @@ export const contactSync = async (contacts: MyContact[]) => {
                 )
             );
 
+            console.log('Snapshot:', snapshot);
+            console.log('Contacts:', contacts);
+
             contacts.slice(i, i + batchSize).forEach(contact => {
                 // Use find instead of some
-                const foundDoc = snapshot.docs.find(doc => doc.id == contact.phoneNumber);
+                const foundDoc = snapshot.docs.find(doc => doc.id == contact.phoneNumber.slice(-10));
 
                 if (foundDoc) {
                     userInApp.push(contact);

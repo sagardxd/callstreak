@@ -71,7 +71,7 @@ const CallLogScreen = () => {
             const contactSynced = getContactSyncStatus();
 
             // if contact are not synced get then from Contact List sync them
-            if (!contactSynced) {
+            // if (!contactSynced) {
                 console.log('nhi h contact sync')
                 reactNativeContacts.getAll()
                     .then(async (fetchedContacts) => {
@@ -89,9 +89,9 @@ const CallLogScreen = () => {
                             console.error("Contact Syncing error", err);
                         }
                     })
-            }else {
-                console.log('contact sync fetching from local storage! Lets goo')
-            }
+            // }else {
+            //     console.log('contact sync fetching from local storage! Lets goo')
+            // }
 
             // after syncing/already synced get the users in the app                 
             setContacts(getUsersInApp());

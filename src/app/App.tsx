@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 const App: React.FC = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: 20 }}>
       <AuthProvider>
         <NavigationContainer>
           <AppNavigator/>

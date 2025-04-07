@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import {  StyleSheet, Keyboard } from 'react-native';
+import { StyleSheet, Keyboard } from 'react-native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { addUser } from '../services/userService';
 import PhoneNumberInputForm from './ui/PhoneNumberInputForm';
 import OtpInputForm from './ui/OtpInputForm';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const PhoneSignIn: React.FC = () => {
   const [confirm, setConfirm] = useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
   const [code, setCode] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   // Send verification code to phone number
   const signInWithPhoneNumber = async (phoneNumber: string) => {
@@ -26,7 +28,8 @@ const PhoneSignIn: React.FC = () => {
 
     try {
       await confirm.confirm(code);
-      await addUser({phoneNumber});
+      setLoading(false);
+      await addUser({ phoneNumber });
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -36,18 +39,22 @@ const PhoneSignIn: React.FC = () => {
     setPhoneNumber(text);
 
     if (text.length === 10) {
-      Keyboard.dismiss(); 
+      Keyboard.dismiss();
     }
   };
 
 
   return confirm ?
-    <OtpInputForm code={code} setCode={setCode} confirmCode={confirmCode}/>
+    <OtpInputForm code={code} setCode={setCode} confirmCode={confirmCode} />
     :
     <PhoneNumberInputForm
       phoneNumber={phoneNumber}
       handleInput={handleInput}
-      signInWithPhoneNumber={signInWithPhoneNumber} />
+      signInWithPhoneNumber={signInWithPhoneNumber}
+      setLoading={setLoading}
+    />
+
+
 };
 
 export default PhoneSignIn;

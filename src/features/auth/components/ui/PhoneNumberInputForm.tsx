@@ -5,10 +5,10 @@ type PhoneNumberInputFormProps = {
   phoneNumber: string
   handleInput: (text: string) => void
   signInWithPhoneNumber:  (text: string) => void
-  
+  setLoading: (loading: boolean) => void
 }
 
-const PhoneNumberInputForm: React.FC<PhoneNumberInputFormProps>= ({ phoneNumber, handleInput, signInWithPhoneNumber}) => {
+const PhoneNumberInputForm: React.FC<PhoneNumberInputFormProps>= ({ phoneNumber, handleInput, signInWithPhoneNumber, setLoading}) => {
   return (
           <View style={styles.container}>
             <View style={styles.inputWrapper}>
@@ -22,7 +22,10 @@ const PhoneNumberInputForm: React.FC<PhoneNumberInputFormProps>= ({ phoneNumber,
                 keyboardType="number-pad"
                 maxLength={10}
               />
-              <TouchableOpacity style={styles.btn} onPress={() => signInWithPhoneNumber(phoneNumber)}>
+              <TouchableOpacity style={styles.btn} onPress={() => {
+                signInWithPhoneNumber(phoneNumber)
+                setLoading(true)
+              }}>
               <Text style={styles.btnText}>Send Otp</Text>
             </TouchableOpacity>
             </View>

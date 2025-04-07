@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ScrollView, SectionList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { MyContact } from './CallLogScreen';
 import { getUsersInApp, getUsersNotInApp } from '../services/contacts.storage';
@@ -20,6 +20,17 @@ const ContactListScreen = () => {
       setLoading(false);
     }
   }, []);
+
+  const sections = [
+    {
+      title: 'Contacts Using the App',
+      data: usersInApp || [],
+    },
+    {
+      title: 'Other Contacts',
+      data: usersNotInApp || [],
+    },
+  ];
   
   if(loading) {
     return <Spinner
@@ -29,24 +40,17 @@ const ContactListScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Contacts Using the App</Text>
-      <FlatList
-        data={usersInApp || []}
-        renderItem={({ item }) => <ContactCard item={item} />}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text style={styles.empty}>No contacts found in app</Text>}
-      />
-
-      <Text style={styles.sectionTitle}>Other Contacts</Text>
-      <FlatList
-        data={usersNotInApp || []}
-        renderItem={({ item }) => <ContactCard item={item} />}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text style={styles.empty}>No contacts outside the app</Text>}
-      />
-    </View>
-  );
+    <SectionList
+      sections={sections}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <ContactCard item={item} />}
+      renderSectionHeader={({ section }) => (
+        <Text style={styles.sectionTitle}>{section.title}</Text>
+      )}
+      ListEmptyComponent={<Text style={styles.empty}>No contacts found</Text>}
+      contentContainerStyle={styles.container}
+    />
+  )
 };
 
 export default ContactListScreen;
